@@ -4,3 +4,129 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 2rem;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #222;
+}
+
+h1, h2 {
+  color: #111;
+  text-decoration: none;
+}
+
+a{
+  color:#111;
+  text-decoration: none;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero img {
+  width: 80%;
+  height: auto;
+
+}
+
+.hero .highlight {
+  flex: 1;
+  min-width: 50px;
+  position:absolute;
+}
+
+.highlight {
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: white;
+}
+
+.highlight h2 {
+  color: #00aaff;
+  margin: 0 0 0.5rem 0;
+}
+
+.highlight p {
+  margin: 0.2rem 0;
+}
+
+.highlight button {
+  margin-top: 1rem;
+  background-color: #00aaff;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.features {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.column {
+  flex: 1 1 300px;
+}
+
+
+.upgrades {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.upgrades div {
+  text-align: center;
+  background: #00aaff;
+  padding: 1rem;
+  color: white;
+  border-radius: 5px;
+}
+
+.upgrades img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.upgrades a {
+  display: block;
+  margin-top: 0.5rem;
+  color: white;
+  text-decoration: underline;
+}
+
+
+ul.reviews {
+  padding-left: 1.2rem;
+  list-style-type: disc;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .features {
+    flex-direction: column;
+  }
+  .hero .highlight {
+    flex: 1;
+    min-width: 50px;
+    position: relative;
+  }
+}
