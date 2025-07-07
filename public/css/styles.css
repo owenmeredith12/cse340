@@ -51,7 +51,7 @@ a{
 }
 
 .highlight h2 {
-  color: #00aaff;
+  color: #277eaa;
   margin: 0 0 0.5rem 0;
 }
 
@@ -61,7 +61,7 @@ a{
 
 .highlight button {
   margin-top: 1rem;
-  background-color: #00aaff;
+  background-color: #277eaa;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -90,7 +90,7 @@ a{
 
 .upgrades div {
   text-align: center;
-  background: #00aaff;
+  background: #277eaa;
   padding: 1rem;
   color: white;
   border-radius: 5px;
