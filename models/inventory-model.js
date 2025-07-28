@@ -40,4 +40,42 @@ async function getDetail(inv_id){
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetail}
+async function registerClassification(classification_name){
+  try {
+    //const sql = "INSERT INTO classification (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *"
+    const realsql = "INSERT INTO classification (classification_name) VALUES ($1)"
+    return await pool.query(realsql, [classification_name])
+  } catch (error) {
+    return error.message
+  }
+}
+
+
+async function registerInventoryItem(inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id){
+  try {
+    const sql = `
+  INSERT INTO inventory (
+    inv_make, inv_model, inv_year, inv_description,
+    inv_price, inv_miles, inv_color, classification_id
+  )
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+  RETURNING *
+`
+    //const realsql = "INSERT INTO classification (classification_name) VALUES ($1)"
+    return await pool.query(sql, [
+  inv_make,
+  inv_model,
+  inv_year,
+  inv_description,
+  inv_price,
+  inv_miles,
+  inv_color,
+  classification_id,
+]);
+  } catch (error) {
+    return error.message
+  }
+}
+
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetail, registerClassification, registerInventoryItem}
