@@ -13,15 +13,17 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoutes")
 const accountRoute = require("./routes/accountRoute")
-const managementRoute = require("./routes/managementRoute")
+//const managementRoute = require("./routes/managementRoute")
 const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const utilities = require("./utilities")
+const cookieParser = require("cookie-parser")
 
 /* ***********************
  * Middleware
  * ************************/
+app.use(cookieParser())
  app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -32,6 +34,21 @@ const utilities = require("./utilities")
   saveUninitialized: true,
   name: 'sessionId',
 }))
+
+app.use(
+  session({
+    secret: "yourSecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // set secure: true if using HTTPS
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.loggedin = req.session.loggedin || false
+  res.locals.accountData = req.session.accountData || null
+  next()
+})
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -60,26 +77,40 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 app.use("/account", accountRoute)
-app.use("/inventory", managementRoute)
+//app.use("/inventory", managementRoute)
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
+
+
+app.use(utilities.checkJWTToken)
 
 /* ***********************
 * Express Error Handler
 * Place after all other middleware
 *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
-  res.render("errors/error", {
-    title: err.status || 'Server Error',
+  const nav = await utilities.getNav();
+
+  // Log the error
+  console.error(`\n[ERROR] ${req.method} ${req.originalUrl}`);
+  console.error(err.stack || err.message);
+
+  // Determine message
+  const status = err.status || 500;
+  const message = status === 404
+    ? err.message
+    : 'Oh no! There was a crash. Maybe try a different route?';
+
+  // Render error view
+  res.status(status).render("errors/error", {
+    title: status,
     message,
-    nav
-  })
-})
+    nav,
+    error: process.env.NODE_ENV === "development" ? err : null
+  });
+});
 
 
 /* ***********************

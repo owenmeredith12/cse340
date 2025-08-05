@@ -8,9 +8,9 @@
 
 
 <div class="form-container">
-  <h2>Add New Vehicle</h2>
+  <h2>Edit New Vehicle</h2>
 
-  <form action="/inv/add-inventory" method="post" id="addInventoryForm">
+  <form action="/inv/update" method="post" id="editInventoryForm">
     <!-- Vehicle Classification Dropdown -->
 
     <label for="classificationList">Classification</label>
@@ -115,6 +115,11 @@
       value="<%= typeof inv_color != 'undefined' ? inv_color : '' %>"
     />
 
-    <button type="submit" class="submit-btn">Add Vehicle</button>
+    <button type="submit" class="submit-btn" disabled>Edit Vehicle</button>
+    <script src="../../js/inv-update.js" ></script>
+    <input type="hidden" name="inv_id"
+<% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+<% } %>>
+
   </form>
 </div>

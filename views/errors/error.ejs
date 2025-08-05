@@ -1,1 +1,9 @@
-<h1>You suck</h1>
+
+<main>
+  <h1><%= title %></h1>
+  <p><%= message %></p>
+
+  <% if (error) { %>
+    <pre style="color: red; background-color: #eee; padding: 1em;"><%= error.stack %></pre>
+  <% } %>
+</main>

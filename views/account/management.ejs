@@ -1,0 +1,20 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (account_firstname) { %>
+  <h2>Welcome <%= account_firstname %></h2>
+<% } %>
+
+<!-- Update Account Info (visible to all users) -->
+<p><a href="/account/update/<%= account_id %>">Update Account Information</a></p>
+
+<!-- Inventory Management (only for Employee or Admin) -->
+<% if (account_type === 'Employee' || account_type === 'Admin') { %>
+  <h3>Inventory Management</h3>
+  <p><a href="/inv/management">Manage Inventory</a></p>
+<% } %>
