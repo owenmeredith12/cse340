@@ -1,0 +1,16 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<%- messages() %>
+
+
+
+  <form action="/inv/delete-classification" method="post" id="classificationForm">
+
+    <label for="classificationList">Classification</label>
+    <%- classificationSelect %>
+    <button type="submit">Confirm Delete</button>
+  </form>

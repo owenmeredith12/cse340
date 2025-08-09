@@ -7,6 +7,24 @@ async function getClassifications(){
   return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
 }
 
+async function getClassificationById(classificationId){
+  try {
+    const sql = `SELECT classification_id, classification_name 
+                 FROM classification 
+                 WHERE classification_id = $1`;
+    const result = await pool.query(sql, [classificationId]);
+
+    if (result.rows.length > 0) {
+      return result.rows[0]; // { classification_id: 1, classification_name: 'SUV' }
+    } else {
+      return null; // not found
+    }
+  } catch (err) {
+    console.error("Error getting classification by ID:", err);
+    throw err;
+  }
+}
+
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
@@ -55,6 +73,15 @@ async function registerClassification(classification_name){
   }
 }
 
+async function deleteClassification(classification_id){
+  try{
+    const sql = "DELETE from classification where classification_id = $1"
+    const data = await pool.query(sql, [classification_id])
+    return data
+  } catch(error){
+    new Error("Delete Inventory Error")
+  }
+}
 
 async function registerInventoryItem(inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id){
   try {
@@ -130,4 +157,4 @@ async function updateInventory(
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetail, registerClassification, registerInventoryItem, getInventoryById, updateInventory, deleteInventoryItem}
+module.exports = {getClassifications, getInventoryByClassificationId, getDetail, registerClassification, registerInventoryItem, getInventoryById, updateInventory, deleteInventoryItem, deleteClassification, getClassificationById}

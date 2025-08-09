@@ -5,6 +5,7 @@ const router = new express.Router()
 const invController = require("../controllers/invController")
 const accountValidation = require("../utilities/inventory-validation")
 const checkAccountRole = require("../utilities/checkAccountType")
+const invCont = require("../controllers/invController")
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
@@ -14,6 +15,7 @@ router.get("/management", checkAccountRole(["Admin", "Employee"]), invController
 router.get("/add-classification", checkAccountRole(["Admin", "Employee"]),invController.addNewClassification);
 router.get("/add-inventory", checkAccountRole(["Admin", "Employee"]), invController.addNewInventoryItem);
 
+router.get("/delete-classification", checkAccountRole(["Admin","Employee"]), invController.buildDeleteClassification);
 router.get("/getInventory/:classificationId", utilities.handleErrors(invController.getInventoryJSON))
 
 router.get(
@@ -49,6 +51,11 @@ router.post(
     utilities.handleErrors(invController.registerInventoryItem)
 )
 
+router.post(
+  "/delete-classification",
+  checkAccountRole(["Admin","Employee"]),
+  utilities.handleErrors(invController.deleteClassification)
+)
 
 
 module.exports = router;

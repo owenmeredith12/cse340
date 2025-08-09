@@ -276,4 +276,27 @@ invCont.deleteInventoryItem = async function (req, res, next) {
   }
 }
 
+invCont.buildDeleteClassification = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const classificationSelect = await utilities.buildClassificationList() // no param
+  res.render("./inventory/delete-classification", {
+    title: "Classification Delete",
+    nav,
+    classificationSelect,
+    errors: null
+  })
+}
+
+invCont.deleteClassification = async function (req, res, next){
+  const classificationId = req.body.classification_id;
+
+  // Optional: fetch the name for a confirmation message
+  const classification = await invModel.getClassificationById(classificationId);
+
+  await invModel.deleteClassification(classificationId);
+
+  req.flash("success", `Classification deleted successfully`);
+  res.redirect("/inv/management");
+}
+
  module.exports = invCont
